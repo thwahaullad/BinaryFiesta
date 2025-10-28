@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1036,4 +1037,1044 @@
 
     </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mind-Reading Fiesta!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3f51b5; /* Deep Indigo */
+            --secondary-color: #00bcd4; /* Cyan */
+            --accent-color: #ff5722; /* Deep Orange */
+            --light-bg: #eceff1; /* Light Blue Grey */
+            --dark-text: #263238; /* Dark Blue Grey */
+            --light-text: #607d8b; /* Blue Grey */
+            --card-bg: #ffffff;
+            --card-hover-shadow: rgba(0, 0, 0, 0.2);
+            --border-color: #cfd8dc; /* Lighter Blue Grey */
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+        }
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px var(--card-hover-shadow);
+            padding: 40px;
+            max-width: 1000px; /* Increased max-width */
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+            box-sizing: border-box; /* Include padding in width */
+        }
+        h1 {
+            font-family: 'Merriweather', serif;
+            color: var(--primary-color);
+            font-size: 2.5em;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        h1::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: var(--secondary-color);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+        h2 {
+            font-family: 'Merriweather', serif;
+            color: var(--dark-text);
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+        .instructions {
+            font-size: 1.1em;
+            margin-bottom: 35px;
+            color: var(--light-text);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- Category Selection Grid & Cards --- */
+        .game-type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Slightly larger cards */
+            gap: 10px;
+            margin-top: 14px;
+        }
+        .game-type-card {
+            background-color: #f0f4c3; /* Light Greenish Yellow */
+            border-radius: 12px;
+            padding: 14px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease;
+            border: 1px solid #cddc39; /* Lime Green */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 160px; /* Consistent height */
+        }
+        .game-type-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);
+            background-color: #e6ee9c; /* Slightly darker on hover */
+        }
+        .game-type-card img {
+            width: 100px; /* Larger category images */
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 8px;
+            border-radius: 8px; /* Slightly rounded images */
+        }
+        .game-type-card span {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #558b2f; /* Darker Green */
+            text-transform: capitalize; /* Capitalize category names */
+        }
+        /* --- END Category Selection --- */
+
+
+        .item-grid { /* Generic class for displaying items */
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Item cards slightly larger */
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .item-card { /* Generic class for individual item styling */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background-color: #e0f2f7; /* Light Cyan */
+            border-radius: 10px;
+            padding: 8px;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: default;
+            border: 1px solid #b2ebf2; /* Lighter Cyan */
+            min-height: 180px; /* Ensure consistent height for items */
+            justify-content: space-between;
+        }
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        .item-card img {
+            width: 100px; /* Significantly larger item images */
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 8px;
+            border-radius: 6px;
+        }
+        .item-card span {
+            font-size: 0.95em; /* Slightly larger font for item names */
+            font-weight: 600;
+            color: var(--dark-text);
+        }
+        .binary-hint {
+            color: var(--light-text);
+            font-size: 0.75em;
+            margin-top: 6px;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .show-hints .binary-hint {
+             visibility: visible;
+             opacity: 1;
+        }
+        /* Highlight specific bit in hint */
+        .binary-hint span {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .nav-buttons {
+            margin-top: 40px;
+            display: flex;
+            gap: 25px; /* Increased gap */
+            justify-content: center;
+        }
+        .nav-buttons button, #startButton {
+            padding: 14px 30px; /* Larger buttons */
+            font-size: 1.15em; /* Larger font */
+            font-weight: bold;
+            border: none;
+            border-radius: 10px; /* More rounded */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        #startButton {
+            background-color: var(--primary-color); /* Green */
+            color: white;
+        }
+        #startButton:hover {
+            background-color: #303f9f; /* Darker primary */
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        .nav-buttons .yes-button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+        .nav-buttons .yes-button:hover {
+            background-color: #43A047;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        .nav-buttons .no-button {
+            background-color: #f44336; /* Red */
+            color: white;
+        }
+        .nav-buttons .no-button:hover {
+            background-color: #e53935;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        /* --- Screen Visibility --- */
+        #gameScreen, #revealScreen, #masterListScreen {
+            display: none;
+        }
+        #gameTypeSelectionScreen {
+            display: block; /* Visible by default */
+        }
+        /* --- END Screen Visibility --- */
+
+        #pageTitle {
+            font-family: 'Merriweather', serif;
+            font-size: 1.7em;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+        }
+        #revealScreen img {
+            width: 180px; /* Even larger revealed image */
+            height: 180px;
+            object-fit: contain;
+            margin-top: 25px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        #revealScreen .item-name { /* Renamed for consistency */
+            font-size: 2em; /* Larger font for revealed item */
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-top: 10px;
+        }
+        .reset-button {
+            background-color: var(--light-text); /* Blue-grey */
+            color: white;
+            padding: 12px 25px;
+            margin-top: 35px;
+            font-size: 1.05em;
+            border-radius: 8px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            margin-left: 10px; /* Spacing between buttons */
+            margin-right: 10px;
+        }
+        .reset-button:hover {
+            background-color: #455a64;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                border-radius: 12px;
+            }
+            h1 {
+                font-size: 2em;
+                margin-bottom: 15px;
+            }
+            h1::after {
+                margin: 10px auto 0;
+            }
+            .instructions {
+                font-size: 1em;
+                margin-bottom: 25px;
+            }
+            .game-type-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 15px;
+            }
+            .game-type-card {
+                padding: 15px;
+                min-height: 140px;
+            }
+            .game-type-card img {
+                width: 70px;
+                height: 70px;
+            }
+            .game-type-card span {
+                font-size: 1em;
+            }
+            .item-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 8px;
+            }
+            .item-card {
+                padding: 6px;
+                min-height: 160px;
+            }
+            .item-card img {
+                width: 100px;
+                height: 100px;
+            }
+            .item-card span {
+                font-size: 0.85em;
+            }
+            .nav-buttons {
+                margin-top: 30px;
+                gap: 15px;
+            }
+            .nav-buttons button, #startButton {
+                padding: 10px 20px;
+                font-size: 1em;
+                border-radius: 8px;
+            }
+            #pageTitle {
+                font-size: 1.4em;
+            }
+            #revealScreen img {
+                width: 130px;
+                height: 130px;
+            }
+            #revealScreen .item-name {
+                font-size: 1.6em;
+            }
+            .reset-button {
+                padding: 10px 18px;
+                font-size: 0.9em;
+                margin-top: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>The Mind-Reading Fiesta!</h1>
+
+        <div id="gameTypeSelectionScreen">
+            <p class="instructions">
+                First, choose the category you'd like to play with! Think of ONE item from the chosen category.
+            </p>
+            <div class="game-type-grid" id="gameTypeGrid">
+                </div>
+        </div>
+
+        <div id="masterListScreen">
+            <p class="instructions">
+                Welcome! To begin, simply **think of ONE <span id="gameCategoryName"></span>** from the list below. Keep it a secret!
+                Once you have chosen, click "Start Game" to proceed.
+            </p>
+            <div class="item-grid" id="masterItemGrid">
+                </div>
+            <button id="startButton">Start Game</button>
+        </div>
+
+        <div id="gameScreen">
+            <h2 id="pageTitle"></h2>
+            <p class="instructions">
+                Is your chosen <span id="currentPageCategoryName"></span>'s image displayed on this page?
+            </p>
+            <div class="item-grid" id="gameItemGrid">
+                </div>
+            <div class="nav-buttons">
+                <button class="yes-button" onclick="handleAnswer(true)">Yes</button>
+                <button class="no-button" onclick="handleAnswer(false)">No</button>
+            </div>
+        </div>
+
+        <div id="revealScreen">
+            <h2>You Chose:</h2>
+            <img id="guessedItemImage" src="" alt="Guessed Item">
+            <p class="item-name" id="guessedItemName"></p>
+            <p style="margin-top: 20px; font-size: 0.9em; color: var(--light-text);">
+                Want to know the secret? Ask your presenter!
+            </p>
+            <button class="reset-button" onclick="resetGame()">Play Again</button>
+            <button class="reset-button" onclick="toggleBinaryHints()">Toggle Binary Hints</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Game Data: Define all categories and their items here ---
+        const gameCategories = {
+            fruits: {
+                name: "Fruit",
+                imageFolder: "fruits", // New: Folder name for images
+                items: [
+                    { id: 1, name: "Mango", imageName: "mango.png" },
+                    { id: 2, name: "Banana", imageName: "banana.png" },
+                    { id: 3, name: "Jackfruit", imageName: "jackfruit.png" },
+                    { id: 4, name: "Pineapple", imageName: "pineapple.png" },
+                    { id: 5, name: "Coconut", imageName: "coconut.png" },
+                    { id: 6, name: "Papaya", imageName: "papaya.png" },
+                    { id: 7, name: "Guava", imageName: "guava.png" },
+                    { id: 8, name: "Watermelon", imageName: "watermelon.png" },
+                    { id: 9, name: "Grape", imageName: "grape.png" },
+                    { id: 10, name: "Orange", imageName: "orange.png" },
+                    { id: 11, name: "Pomegranate", imageName: "pomegranate.png" },
+                    { id: 12, name: "Custard Apple", imageName: "custard_apple.png" },
+                    { id: 13, name: "Sapotta (Chikku)", imageName: "sapodilla.png" },
+                    { id: 14, name: "Lychee", imageName: "lychee.png" },
+                    { id: 15, name: "Rambutan", imageName: "rambutan.png" },
+                    { id: 16, name: "Jamun (Njavalpazham)", imageName: "njavalpazham.png" },
+                    { id: 17, name: "Shamam (Muskmelon)", imageName: "muskmelon.png" },
+                    { id: 18, name: "Dates", imageName: "dates.png" },
+                    { id: 19, name: "Gooseberry", imageName: "gooseberry.png" },
+                    { id: 20, name: "Kiwi", imageName: "kiwi.png" },
+                    { id: 21, name: "Apple", imageName: "apple.png" },
+                    { id: 22, name: "Lemon", imageName: "lemon.png" },
+                    { id: 23, name: "Passion Fruit", imageName: "passion_fruit.png" },
+                    { id: 24, name: "Star Fruit", imageName: "star_fruit.png" },
+                    { id: 25, name: "Mangosteen", imageName: "mangosteen.png" },
+                    { id: 26, name: "Avocado", imageName: "avocado.png" },
+                    { id: 27, name: "Dragon Fruit", imageName: "dragon_fruit.png" },
+                    { id: 28, name: "Rose Apple", imageName: "rose_apple.png" },
+                    { id: 29, name: "Fig", imageName: "fig.png" },
+                    { id: 30, name: "Strawberry", imageName: "strawberry.png" },
+                    { id: 31, name: "Plum", imageName: "plum.png" }
+                ]
+            },
+            vehicles: {
+                name: "Vehicle",
+                imageFolder: "vehicles",
+                items: [
+                    { id: 1, name: "Car", imageName: "car.png" },
+                    { id: 2, name: "Bicycle", imageName: "bicycle.png" },
+                    { id: 3, name: "Motorcycle", imageName: "motorcycle.png" },
+                    { id: 4, name: "Bus", imageName: "bus.png" },
+                    { id: 5, name: "Truck", imageName: "truck.png" },
+                    { id: 6, name: "Train", imageName: "train.png" },
+                    { id: 7, name: "Airplane", imageName: "airplane.png" },
+                    { id: 8, name: "Boat", imageName: "boat.png" },
+                    { id: 9, name: "Helicopter", imageName: "helicopter.png" },
+                    { id: 10, name: "Scooter", imageName: "scooter.png" },
+                    { id: 11, name: "Tractor", imageName: "tractor.png" },
+                    { id: 12, name: "Ambulance", imageName: "ambulance.webp" },
+                    { id: 13, name: "Fire Truck", imageName: "firetruck.webp" },
+                    { id: 14, name: "Police Car", imageName: "policecar.png" },
+                    { id: 15, name: "Submarine", imageName: "submarine.webp" },
+                    { id: 16, name: "Hot Air Balloon", imageName: "hotairballoon.png" },
+                    { id: 17, name: "Rocket", imageName: "rocket.png" },
+                    { id: 18, name: "Forklift", imageName: "forklift.png" },
+                    { id: 19, name: "Crane", imageName: "crane.png" },
+                    { id: 20, name: "Bulldozer", imageName: "bulldozer.png" },
+                    { id: 21, name: "Jet Ski", imageName: "jetski.png" },
+                    { id: 22, name: "Sailboat", imageName: "sailboat.png" },
+                    { id: 23, name: "Kayak", imageName: "kayak.png" },
+                    { id: 24, name: "Cart", imageName: "cart.png" },
+                    { id: 25, name: "Cable Car", imageName: "cablecar.webp" },
+                    { id: 26, name: "Van", imageName: "van.png" },
+                    { id: 27, name: "Tank", imageName: "tank.png" },
+                    { id: 28, name: "Autorikshaw", imageName: "autorikshaw.png" },
+                    { id: 29, name: "Bullock cart", imageName: "bullockcart.png" },
+                    { id: 30, name: "Unicycle", imageName: "unicycle.png" },
+                    { id: 31, name: "Blimp", imageName: "blimp.png" }
+                ]
+            },
+            flowers: {
+                name: "Flower",
+                imageFolder: "flowers",
+                items: [
+                    { id: 1, name: "Rose", imageName: "rose.png" },
+                    { id: 2, name: "Lily", imageName: "lily.png" },
+                    { id: 3, name: "Tulip", imageName: "tulip.png" },
+                    { id: 4, name: "Sunflower", imageName: "sunflower.png" },
+                    { id: 5, name: "Daisy", imageName: "daisy.png" },
+                    { id: 6, name: "Orchid", imageName: "orchid.png" },
+                    { id: 7, name: "Jasmine", imageName: "jasmine.png" },
+                    { id: 8, name: "Lotus", imageName: "lotus.png" },
+                    { id: 9, name: "Hibiscus", imageName: "hibiscus.png" },
+                    { id: 10, name: "Marigold", imageName: "marigold.png" },
+                    { id: 11, name: "Carnation", imageName: "carnation.png" },
+                    { id: 12, name: "Lavender", imageName: "lavender.png" },
+                    { id: 13, name: "Daffodil", imageName: "daffodil.png" },
+                    { id: 14, name: "Peony", imageName: "peony.png" },
+                    { id: 15, name: "Iris", imageName: "iris.png" },
+                    { id: 16, name: "Zinnia", imageName: "zinnia.png" },
+                    { id: 17, name: "Snapdragon", imageName: "snapdragon.png" },
+                    { id: 18, name: "Petunia", imageName: "petunia.png" },
+                    { id: 19, name: "Aster", imageName: "aster.png" },
+                    { id: 20, name: "Chrysanthemum", imageName: "chrysanthemum.png" },
+                    { id: 21, name: "Begonia", imageName: "begonia.png" },
+                    { id: 22, name: "Geranium", imageName: "geranium.png" },
+                    { id: 23, name: "Hyacinth", imageName: "hyacinth.png" },
+                    { id: 24, name: "Gladiolus", imageName: "gladiolus.png" },
+                    { id: 25, name: "Morning Glory", imageName: "morning_glory.png" },
+                    { id: 26, name: "Anthurium", imageName: "anthurium.png" },
+                    { id: 27, name: "Lantana", imageName: "lantana.png" },
+                    { id: 28, name: "Plumeria", imageName: "plumeria.png" },
+                    { id: 29, name: "Ixora", imageName: "thechi.png" },
+                    { id: 30, name: "Gardenia", imageName: "gardenia.png" },
+                    { id: 31, name: "Adenium", imageName: "adenium.png" }
+                ]
+            },
+            vegetables: {
+                name: "Vegetable",
+                imageFolder: "vegetables",
+                items: [
+                    { id: 1, name: "Carrot", imageName: "carrot.png" },
+                    { id: 2, name: "Potato", imageName: "potato.png" },
+                    { id: 3, name: "Tomato", imageName: "tomato.png" },
+                    { id: 4, name: "Onion", imageName: "onion.png" },
+                    { id: 5, name: "Cabbage", imageName: "cabbage.png" },
+                    { id: 6, name: "Spinach", imageName: "spinach.png" },
+                    { id: 7, name: "Drumstick", imageName: "drumstick.png" },
+                    { id: 8, name: "Ash Gourd", imageName: "ash_gourd.png" },
+                    { id: 9, name: "Bitter Gourd", imageName: "bitter_gourd.png" },
+                    { id: 10, name: "Cucumber", imageName: "cucumber.png" },
+                    { id: 11, name: "Eggplant (Brinjal)", imageName: "eggplant.png" },
+                    { id: 12, name: "Garlic", imageName: "garlic.png" },
+                    { id: 13, name: "Ginger", imageName: "ginger.png" },
+                    { id: 14, name: "Long Bean (Payar)", imageName: "long_bean.png" },
+                    { id: 15, name: "Mushroom", imageName: "mushroom.png" },
+                    { id: 16, name: "Green Chili", imageName: "green_chili.png" },
+                    { id: 17, name: "Pumpkin", imageName: "pumpkin.png" },
+                    { id: 18, name: "Radish", imageName: "radish.png" },
+                    { id: 19, name: "Sweet Potato", imageName: "sweet_potato.png" },
+                    { id: 20, name: "Tapioca (Kappa)", imageName: "tapioca.png" },
+                    { id: 21, name: "Ladies Finger (Okra)", imageName: "okra.png" },
+                    { id: 22, name: "Beetroot", imageName: "beetroot.png" },
+                    { id: 23, name: "Cluster Bean", imageName: "cluster_bean.png" },
+                    { id: 24, name: "Chinese Potato (koorka)", imageName: "chinese_potato.png" },
+                    { id: 25, name: "Snake Gourd", imageName: "snake_gourd.png" },
+                    { id: 26, name: "Bottle Gourd", imageName: "bottle_gourd.png" },
+                    { id: 27, name: "Ivy Gourd (Kovakkai)", imageName: "ivy_gourd.png" },
+                    { id: 28, name: "Taro (Chembu)", imageName: "taro.png" },
+                    { id: 29, name: "Elephant Yam", imageName: "elephant_yam.png" },
+                    { id: 30, name: "Green Banana", imageName: "green_banana.png" },
+                    { id: 31, name: "Curry Leaves", imageName: "curry_leaves.png" }
+                ]
+            },
+            places: {
+                name: "Place",
+                imageFolder: "places",
+                items: [
+                    { id: 1, name: "Beach", imageName: "beach.png" },
+                    { id: 2, name: "Mountain", imageName: "mountain.png" },
+                    { id: 3, name: "Forest", imageName: "forest.png" },
+                    { id: 4, name: "Desert", imageName: "desert.png" },
+                    { id: 5, name: "City", imageName: "city.png" },
+                    { id: 6, name: "Village", imageName: "village.png" },
+                    { id: 7, name: "River", imageName: "river.png" },
+                    { id: 8, name: "Lake", imageName: "lake.png" },
+                    { id: 9, name: "Bridge", imageName: "bridge.png" },
+                    { id: 10, name: "Castle", imageName: "castle.png" },
+                    { id: 11, name: "Museum", imageName: "museum.png" },
+                    { id: 12, name: "School", imageName: "school.png" },
+                    { id: 13, name: "Hospital", imageName: "hospital.png" },
+                    { id: 14, name: "Park", imageName: "park.png" },
+                    { id: 15, name: "Zoo", imageName: "zoo.png" },
+                    { id: 16, name: "Library", imageName: "library.png" },
+                    { id: 17, name: "Stadium", imageName: "stadium.png" },
+                    { id: 18, name: "Airport", imageName: "airport.png" },
+                    { id: 19, name: "Harbor", imageName: "harbor.png" },
+                    { id: 20, name: "Farm", imageName: "farm.png" },
+                    { id: 21, name: "Lighthouse", imageName: "lighthouse.png" },
+                    { id: 22, name: "Pyramids", imageName: "pyramids.png" },
+                    { id: 23, name: "Tower", imageName: "tower.png" },
+                    { id: 24, name: "Waterfall", imageName: "waterfall.png" },
+                    { id: 25, name: "Volcano", imageName: "volcano.png" },
+                    { id: 26, name: "Cave", imageName: "cave.png" },
+                    { id: 27, name: "Island", imageName: "island.png" },
+                    { id: 28, name: "Canyon", imageName: "canyon.png" },
+                    { id: 29, name: "Market", imageName: "market.png" },
+                    { id: 30, name: "Masjid", imageName: "masjid.png" },
+                    { id: 31, name: "Palace", imageName: "palace.png" }
+                ]
+            },
+            indian_leaders: {
+                name: "Indian Leader",
+                imageFolder: "indian_leaders",
+                items: [
+                    { id: 1, name: "Mahatma Gandhi", imageName: "gandhi.png" },
+                    { id: 2, name: "Jawaharlal Nehru", imageName: "nehru.png" },
+                    { id: 3, name: "Sardar Patel", imageName: "patel.png" },
+                    { id: 4, name: "Subhas Chandra Bose", imageName: "bose.png" },
+                    { id: 5, name: "Bhagat Singh", imageName: "bhagat_singh.png" },
+                    { id: 6, name: "VP Singh", imageName: "vpsingh.png" },
+                    { id: 7, name: "Dr. B.R. Ambedkar", imageName: "ambedkar.png" },
+                    { id: 8, name: "Lal Bahadur Shastri", imageName: "shastri.png" },
+                    { id: 9, name: "Sarojini Naidu", imageName: "naidu.png" },
+                    { id: 10, name: "Rajendra Prasad", imageName: "prasad.png" },
+                    { id: 11, name: "Abdul Kalam", imageName: "kalam.png" },
+                    { id: 12, name: "Tipu Sultan", imageName: "tipu.png" },
+                    { id: 13, name: "Akbar the Great", imageName: "akbar.png" },
+                    { id: 14, name: "Shah Jahan", imageName: "shahjahan.png" },
+                    { id: 15, name: "Aurangzeb", imageName: "aurangazeb.png" },
+                    { id: 16, name: "Muhammed Abdul Rahman", imageName: "muhammedabdulrahman.png" },
+                    { id: 17, name: "Swami Vivekananda", imageName: "vivekananda.png" },
+                    { id: 18, name: "Chhatrapati Shivaji", imageName: "shivaji.png" },
+                    { id: 19, name: "Ashoka the Great", imageName: "ashoka.png" },
+                    { id: 20, name: "Bahadur Shah Zafar", imageName: "bahadurshah.png" }, /* Poet */
+                    { id: 21, name: "M. Visvesvaraya", imageName: "visvesvaraya.png" }, /* Engineer */
+                    { id: 22, name: "Homi J. Bhabha", imageName: "homibhabha.png" }, /* Nuclear physicist */
+                    { id: 23, name: "C. V. Raman", imageName: "cvraman.png" }, /* Physicist */
+                    { id: 24, name: "S. Ramanujan", imageName: "ramanujan.png" }, /* Mathematician */
+                    { id: 25, name: "Variyankunnath Kunjahammad Haji", imageName: "variyankunnath.png" }, /* Freedom fighter */
+                    { id: 26, name: "Khan Abdul Ghaffar Khan", imageName: "ghanabdulghaffar.png" }, /* Freedom fighter */
+                    { id: 27, name: "Maulana Abul Kalam Azad", imageName: "abulkalam.png" }, /* Educationist/Freedom fighter */
+                    { id: 28, name: "Zakir Husain", imageName: "zakirhusain.png" }, /* Former President */
+                    { id: 29, name: "Fakhruddin Ali Ahmed", imageName: "fakhrudin.png" }, /* Former President */
+                    { id: 30, name: "Mohammad Hidayatullah", imageName: "hidayathullah.png" }, /* Former Chief Justice/VP */
+                    { id: 31, name: "Muhammed Ali Jouhar", imageName: "muhammedalijouhar.png" } /* Though Pakistan's founder, historically significant */
+                ]
+            },
+            foods: {
+                name: "Food",
+                imageFolder: "foods",
+                items: [
+                    { id: 1, name: "Appam with Stew", imageName: "appam.png" },
+                    { id: 2, name: "Puttu and Kadala Curry", imageName: "puttu.png" },
+                    { id: 3, name: "Dosa with Sambar", imageName: "dosa.png" },
+                    { id: 4, name: "Idli with Chutney", imageName: "idly.png" },
+                    { id: 5, name: "Biryani (Chicken/Mutton)", imageName: "biryani.png" },
+                    { id: 6, name: "Kerala Fish Curry (Meen Curry)", imageName: "fish_curry.png" },
+                    { id: 7, name: "Karimeen Pollichathu", imageName: "karimeen.png" },
+                    { id: 8, name: "Tapioca (Kappa) with Fish Curry", imageName: "kappa.png" },
+                    { id: 9, name: "Parotta with Beef Curry", imageName: "porotta_beef.png" },
+                    { id: 10, name: "Sadya (Vegetarian Feast)", imageName: "sadya.png" },
+                    { id: 11, name: "Pazham Pori (Banana Fritters)", imageName: "pazham_pori.png" },
+                    { id: 12, name: "Kerala Prawn Curry", imageName: "prawn_curry.png" },
+                    { id: 13, name: "Erissery (Pumpkin & Lentil)", imageName: "erissery.png" },
+                    { id: 14, name: "Payasam (Sweet Pudding)", imageName: "payasam.png" },
+                    { id: 15, name: "Malabar Parotta", imageName: "masala_dosa.png" },
+                    { id: 16, name: "Shawarma", imageName: "shawarma.png" }, /* Arab/Middle Eastern - popular in Kerala */
+                    { id: 17, name: "Al Faham Chicken", imageName: "alfaham.png" }, /* Arab/Middle Eastern */
+                    { id: 18, name: "Kabsa", imageName: "kabsa.png" }, /* Arab/Middle Eastern */
+                    { id: 19, name: "Pizza", imageName: "pizza.png" }, /* Italian - popular globally/Kerala */
+                    { id: 20, name: "Burger", imageName: "burger.png" }, /* Western - popular globally/Kerala */
+                    { id: 21, name: "Fried Rice", imageName: "fried_rice.png" }, /* Indo-Chinese - popular in Kerala */
+                    { id: 22, name: "Noodles", imageName: "noodles.png" }, /* Indo-Chinese - popular in Kerala */
+                    { id: 23, name: "Samosa", imageName: "samosa.png" }, /* Indian snack */
+                    { id: 24, name: "Vada", imageName: "vada.png" }, /* South Indian snack */
+                    { id: 25, name: "Ghee Roast Dosa", imageName: "ghee_roast_dosa.png" },
+                    { id: 26, name: "Prawn Biryani", imageName: "prawn_biryani.png" },
+                    { id: 27, name: "Chicken 65", imageName: "chicken_65.png" },
+                    { id: 28, name: "Gobi Manchurian", imageName: "gobi_manchurian.png" },
+                    { id: 29, name: "Paneer Butter Masala", imageName: "paneer_butter_masala.png" },
+                    { id: 30, name: "Fish Moilee", imageName: "fish_moilee.png" },
+                    { id: 31, name: "Thalassery Biryani", imageName: "thalassery_biryani.png" }
+                ]
+            },
+            birds: {
+                name: "Bird",
+                imageFolder: "birds",
+                items: [
+                    { id: 1, name: "Sparrow", imageName: "sparrow.png" },
+                    { id: 2, name: "Crow", imageName: "crow.png" },
+                    { id: 3, name: "Pigeon", imageName: "pigeon.png" },
+                    { id: 4, name: "Eagle", imageName: "eagle.png" },
+                    { id: 5, name: "Parrot", imageName: "parrot.png" },
+                    { id: 6, name: "Owl", imageName: "owl.png" },
+                    { id: 7, name: "Penguin", imageName: "penguin.png" },
+                    { id: 8, name: "Ostrich", imageName: "ostrich.png" },
+                    { id: 9, name: "Peacock", imageName: "peacock.png" },
+                    { id: 10, name: "Duck", imageName: "duck.png" },
+                    { id: 11, name: "Swan", imageName: "swan.png" },
+                    { id: 12, name: "Goose", imageName: "goose.png" },
+                    { id: 13, name: "Kingfisher", imageName: "kingfisher.png" },
+                    { id: 14, name: "Woodpecker", imageName: "woodpecker.png" },
+                    { id: 15, name: "Hummingbird", imageName: "hummingbird.png" },
+                    { id: 16, name: "Robin", imageName: "robin.png" },
+                    { id: 17, name: "Dove", imageName: "dove.png" },
+                    { id: 18, name: "Flamingo", imageName: "flamingo.png" },
+                    { id: 19, name: "Vulture", imageName: "vulture.png" },
+                    { id: 20, name: "Chicken", imageName: "chicken.png" },
+                    { id: 21, name: "Kite", imageName: "kite.png" },
+                    { id: 22, name: "Cuckoo", imageName: "cuckoo.png" },
+                    { id: 23, name: "Pelican", imageName: "pelican.png" },
+                    { id: 24, name: "Hornbill", imageName: "hornbill.png" },
+                    { id: 25, name: "Albatross", imageName: "albatross.png" },
+                    { id: 26, name: "Myna", imageName: "myna.png" },
+                    { id: 27, name: "Bulbul", imageName: "bulbul.png" },
+                    { id: 28, name: "Crane", imageName: "crane.png" },
+                    { id: 29, name: "Nightingale", imageName: "nightingale.png" },
+                    { id: 30, name: "Canary", imageName: "canary.png" },
+                    { id: 31, name: "Quail", imageName: "quail.png" }
+                ]
+            },
+            animals: {
+                name: "Animal",
+                imageFolder: "animals",
+                items: [
+                    { id: 1, name: "Lion", imageName: "lion.png" },
+                    { id: 2, name: "Tiger", imageName: "tiger.png" },
+                    { id: 3, name: "Elephant", imageName: "elephant.png" },
+                    { id: 4, name: "Giraffe", imageName: "giraffe.png" },
+                    { id: 5, name: "Zebra", imageName: "zebra.png" },
+                    { id: 6, name: "Monkey", imageName: "monkey.png" },
+                    { id: 7, name: "Bear", imageName: "bear.png" },
+                    { id: 8, name: "Wolf", imageName: "wolf.png" },
+                    { id: 9, name: "Fox", imageName: "fox.png" },
+                    { id: 10, name: "Deer", imageName: "deer.png" },
+                    { id: 11, name: "Rabbit", imageName: "rabbit.png" },
+                    { id: 12, name: "Kangaroo", imageName: "kangaroo.png" },
+                    { id: 13, name: "Panda", imageName: "panda.png" },
+                    { id: 14, name: "Koala", imageName: "koala.png" },
+                    { id: 15, name: "Dolphin", imageName: "dolphin.png" },
+                    { id: 16, name: "Whale", imageName: "whale.png" },
+                    { id: 17, name: "Shark", imageName: "shark.png" },
+                    { id: 18, name: "Crocodile", imageName: "crocodile.png" },
+                    { id: 19, name: "Snake", imageName: "snake.png" },
+                    { id: 20, name: "Lizard", imageName: "lizard.png" },
+                    { id: 21, name: "Turtle", imageName: "turtle.png" },
+                    { id: 22, name: "Frog", imageName: "frog.png" },
+                    { id: 23, name: "Cat", imageName: "cat.png" },
+                    { id: 24, name: "Dog", imageName: "dog.png" },
+                    { id: 25, name: "Cow", imageName: "cow.png" },
+                    { id: 26, name: "Horse", imageName: "horse.png" },
+                    { id: 27, name: "Pig", imageName: "pig.png" },
+                    { id: 28, name: "Sheep", imageName: "sheep.png" },
+                    { id: 29, name: "Goat", imageName: "goat.png" },
+                    { id: 30, name: "Rhino", imageName: "rhino.png" },
+                    { id: 31, name: "Hippopotamus", imageName: "hippo.png" }
+                ]
+            },
+            community_helpers: {
+                name: "Community Helper",
+                imageFolder: "community_helpers",
+                items: [
+                    { id: 1, name: "Doctor", imageName: "doctor.png" },
+                    { id: 2, name: "Teacher", imageName: "teacher.png" },
+                    { id: 3, name: "Firefighter", imageName: "firefighter.png" },
+                    { id: 4, name: "Police Officer", imageName: "policeofficer.png" },
+                    { id: 5, name: "Mail Carrier", imageName: "postman.png" },
+                    { id: 6, name: "Chef", imageName: "chef.png" },
+                    { id: 7, name: "Farmer", imageName: "farmer.png" },
+                    { id: 8, name: "Builder", imageName: "builder.png" },
+                    { id: 9, name: "Pilot", imageName: "pilot.png" },
+                    { id: 10, name: "Astronaut", imageName: "astronaut.png" },
+                    { id: 11, name: "Gardener", imageName: "gardener.png" },
+                    { id: 12, name: "Librarian", imageName: "librarian.png" },
+                    { id: 13, name: "Veterinarian", imageName: "veterinarian.png" },
+                    { id: 14, name: "Dentist", imageName: "dentist.png" },
+                    { id: 15, name: "Musician", imageName: "musician.png" },
+                    { id: 16, name: "Artist", imageName: "artist.png" },
+                    { id: 17, name: "Scientist", imageName: "scientist.png" },
+                    { id: 18, name: "Mechanic", imageName: "mechanic.png" },
+                    { id: 19, name: "Electrician", imageName: "electrician.png" },
+                    { id: 20, name: "Plumber", imageName: "plumber.png" },
+                    { id: 21, name: "Hair Stylist", imageName: "hair_stylist.png" },
+                    { id: 22, name: "Journalist", imageName: "journalist.png" },
+                    { id: 23, name: "Judge", imageName: "judge.png" },
+                    { id: 24, name: "Fisherman", imageName: "fisherman.png" },
+                    { id: 25, name: "Baker", imageName: "baker.png" },
+                    { id: 26, name: "Soldier", imageName: "soldier.png" },
+                    { id: 27, name: "Nurse", imageName: "nurse.png" },
+                    { id: 28, name: "Architect", imageName: "architect.png" },
+                    { id: 29, name: "Programmer", imageName: "programmer.png" },
+                    { id: 30, name: "Cashier", imageName: "cashier.png" },
+                    { id: 31, name: "Chef", imageName: "chef.png" } // Re-using chef
+                ]
+            },
+            fishes: {
+                name: "Fish",
+                imageFolder: "fishes",
+                items: [
+                    { id: 1, name: "Pearl Spot (Karimeen)", imageName: "pearl_spot.png" }, // Kerala edible
+                    { id: 2, name: "Sardine (Chala)", imageName: "sardine.png" }, // Kerala edible
+                    { id: 3, name: "Mackerel (Aiyala)", imageName: "mackerel.png" }, // Kerala edible
+                    { id: 4, name: "Kingfish (Ayakkoora)", imageName: "kingfish.png" }, // Kerala edible
+                    { id: 5, name: "Seer Fish (Neymeen.).", imageName: "seer_fish.png" }, // Kerala edible
+                    { id: 6, name: "Prawns (Chemmeen)", imageName: "prawns.png" }, // Kerala edible
+                    { id: 7, name: "Crab (Nandu)", imageName: "crab.png" }, // Kerala edible
+                    { id: 8, name: "Tilapia", imageName: "tilapia.png" }, // Kerala edible & farmed
+                    { id: 9, name: "Catfish", imageName: "catfish.png" }, // Kerala edible
+                    { id: 10, name: "Anchovy (Netholi)", imageName: "anchovy.png" }, // Kerala edible
+                    { id: 11, name: "Tuna", imageName: "tuna.png" }, // Edible
+                    { id: 12, name: "Salmon", imageName: "salmon.png" }, // Edible
+                    { id: 13, name: "Goldfish", imageName: "goldfish.png" }, // Pet fish
+                    { id: 14, name: "Clownfish", imageName: "clownfish.png" }, // Pet fish
+                    { id: 15, name: "Betta Fish", imageName: "betta_fish.png" }, // Pet fish
+                    { id: 16, name: "Angelfish", imageName: "angelfish.png" }, // Pet fish
+                    { id: 17, name: "Guppy", imageName: "guppy.png" }, // Pet fish
+                    { id: 18, name: "Discus Fish", imageName: "discus_fish.png" }, // Pet fish
+                    { id: 19, name: "Pufferfish", imageName: "pufferfish.png" }, // Unique fish
+                    { id: 20, name: "Seahorse", imageName: "seahorse.png" }, // Unique fish
+                    { id: 21, name: "Shark", imageName: "shark.png" }, // Common large marine
+                    { id: 22, name: "Dolphin", imageName: "dolphin.png" }, // Marine mammal (often categorized with fish)
+                    { id: 23, name: "Whale", imageName: "whale.png" }, // Marine mammal (often categorized with fish)
+                    { id: 24, name: "Eel", imageName: "eel.png" },
+                    { id: 25, name: "Squid", imageName: "squid.png" },
+                    { id: 26, name: "Octopus", imageName: "octopus.png" },
+                    { id: 27, name: "Red Snapper", imageName: "red_snapper.png" },
+                    { id: 28, name: "Pomfret", imageName: "pomfret.png" },
+                    { id: 29, name: "Rohu", imageName: "rohu.png" },
+                    { id: 30, name: "Catla", imageName: "catla.png" },
+                    { id: 31, name: "Murrel", imageName: "murrel.png" }
+                ]
+            },
+            world_cities: {
+                name: "World City",
+                imageFolder: "world_cities",
+                items: [
+                    { id: 1, name: "New York", imageName: "new_york.png" },
+                    { id: 2, name: "London", imageName: "london.png" },
+                    { id: 3, name: "Paris", imageName: "paris.png" },
+                    { id: 4, name: "Tokyo", imageName: "tokyo.png" },
+                    { id: 5, name: "Dubai", imageName: "dubai.png" },
+                    { id: 6, name: "Sydney", imageName: "sydney.png" },
+                    { id: 7, name: "Rome", imageName: "rome.png" },
+                    { id: 8, name: "Cairo", imageName: "cairo.png" },
+                    { id: 9, name: "Beijing", imageName: "beijing.png" },
+                    { id: 10, name: "Rio de Janeiro", imageName: "rio.png" },
+                    { id: 11, name: "Moscow", imageName: "moscow.png" },
+                    { id: 12, name: "Istanbul", imageName: "istanbul.png" },
+                    { id: 13, name: "Mumbai", imageName: "mumbai.png" },
+                    { id: 14, name: "Delhi", imageName: "delhi.png" },
+                    { id: 15, name: "Bangalore", imageName: "bangalore.png" },
+                    { id: 16, name: "Singapore", imageName: "singapore.png" },
+                    { id: 17, name: "Hong Kong", imageName: "hong_kong.png" },
+                    { id: 18, name: "Berlin", imageName: "berlin.png" },
+                    { id: 19, name: "Madrid", imageName: "madrid.png" },
+                    { id: 20, name: "Toronto", imageName: "toronto.png" },
+                    { id: 21, name: "Mexico City", imageName: "mexico_city.png" },
+                    { id: 22, name: "Buenos Aires", imageName: "buenos_aires.png" },
+                    { id: 23, name: "Cape Town", imageName: "cape_town.png" },
+                    { id: 24, name: "Seoul", imageName: "seoul.png" },
+                    { id: 25, name: "Amsterdam", imageName: "amsterdam.png" },
+                    { id: 26, name: "Vienna", imageName: "vienna.png" },
+                    { id: 27, name: "Prague", imageName: "prague.png" },
+                    { id: 28, name: "Lisbon", imageName: "lisbon.png" },
+                    { id: 29, name: "Stockholm", imageName: "stockholm.png" },
+                    { id: 30, name: "Copenhagen", imageName: "copenhagen.png" },
+                    { id: 31, name: "Oslo", imageName: "oslo.png" }
+                ]
+            },
+            world_scientists: {
+                name: "World Scientist",
+                imageFolder: "world_scientists",
+                items: [
+                    { id: 1, name: "Albert Einstein", imageName: "einstein.png" },
+                    { id: 2, name: "Isaac Newton", imageName: "newton.png" },
+                    { id: 3, name: "Marie Curie", imageName: "marie_curie.png" },
+                    { id: 4, name: "Charles Darwin", imageName: "darwin.png" },
+                    { id: 5, name: "Stephen Hawking", imageName: "hawking.png" },
+                    { id: 6, name: "Galileo Galilei", imageName: "galileo.png" },
+                    { id: 7, name: "Nikola Tesla", imageName: "tesla.png" },
+                    { id: 8, name: "Alan Turing", imageName: "turing.png" },
+                    { id: 9, name: "Rosalind Franklin", imageName: "franklin.png" },
+                    { id: 10, name: "Ada Lovelace", imageName: "lovelace.png" },
+                    { id: 11, name: "Aristotle", imageName: "aristotle.png" },
+                    { id: 12, name: "Pythagoras", imageName: "pythagoras.png" },
+                    { id: 13, name: "Archimedes", imageName: "archimedes.png" },
+                    { id: 14, name: "Srinivasa Ramanujan", imageName: "ramanujan.png" }, /* Indian Mathematician */
+                    { id: 15, name: "C. V. Raman", imageName: "cvraman.png" }, /* Indian Physicist */
+                    { id: 16, name: "Homi J. Bhabha", imageName: "homibhabha.png" }, /* Indian Nuclear Physicist */
+                    { id: 17, name: "S. Chandrasekhar", imageName: "chandrasekhar.png" }, /* Indian-American Astrophysicist */
+                    { id: 18, name: "Jagadish Chandra Bose", imageName: "jc_bose.png" }, /* Indian Polymath */
+                    { id: 19, name: "Meghnad Saha", imageName: "meghnad_saha.png" }, /* Indian Astrophysicist */
+                    { id: 20, name: "Aryabhata", imageName: "aryabhata.png" }, /* Ancient Indian Mathematician/Astronomer */
+                    { id: 21, name: "Sushruta", imageName: "sushruta.png" }, /* Ancient Indian Surgeon */
+                    { id: 22, name: "A. P. J. Abdul Kalam", imageName: "kalam.png" }, /* Indian Scientist & President */
+                    { id: 23, name: "Venkatraman Ramakrishnan", imageName: "venkatraman.png" }, /* Indian-British Nobel Laureate (Chemistry) */
+                    { id: 24, name: "K. Radhakrishnan", imageName: "k_radhakrishnan.png" }, /* Indian Space Scientist (ISRO) */
+                    { id: 25, name: "M. S. Swaminathan", imageName: "msswaminathan.png" }, /* Indian Geneticist (Green Revolution) */
+                    { id: 26, name: "V. Ramaswami", imageName: "vramaswami.png" }, /* Indian Physicist */
+                    { id: 27, name: "Birbal Sahni", imageName: "birbal_sahni.png" }, /* Indian Paleobotanist */
+                    { id: 28, name: "G. N. Ramachandran", imageName: "gn_ramachandran.png" }, /* Indian Biophysicist */
+                    { id: 29, name: "Har Gobind Khorana", imageName: "khorana.png" }, /* Indian-American Biochemist (Nobel) */
+                    { id: 30, name: "Max Planck", imageName: "planck.png" },
+                    { id: 31, name: "Niels Bohr", imageName: "nielsbohr.png" }
+                ]
+            }
+            // Add more categories here
+        };
+
+        // --- Game State Variables ---
+        const pageValues = [1, 2, 4, 8, 16];
+        const pageNames = ["A", "B", "C", "D", "E"];
+        let currentPageIndex = 0;
+        let currentSum = 0;
+        let showBinaryHints = false;
+        let currentCategoryKey = null;
+        let currentCategoryData = null;
+
+        // --- DOM Elements ---
+        const gameTypeSelectionScreen = document.getElementById('gameTypeSelectionScreen');
+        const gameTypeGrid = document.getElementById('gameTypeGrid');
+        const masterListScreen = document.getElementById('masterListScreen');
+        const gameScreen = document.getElementById('gameScreen');
+        const revealScreen = document.getElementById('revealScreen');
+        const masterItemGrid = document.getElementById('masterItemGrid');
+        const gameItemGrid = document.getElementById('gameItemGrid');
+        const pageTitle = document.getElementById('pageTitle');
+        const gameCategoryName = document.getElementById('gameCategoryName');
+        const currentPageCategoryName = document.getElementById('currentPageCategoryName');
+        const guessedItemImage = document.getElementById('guessedItemImage');
+        const guessedItemName = document.getElementById('guessedItemName');
+        const startButton = document.getElementById('startButton');
+
+        // --- Helper Function to Render Game Type Cards ---
+        function renderGameTypeCards() {
+            gameTypeGrid.innerHTML = '';
+            for (const key in gameCategories) {
+                const category = gameCategories[key];
+                const cardDiv = document.createElement('div');
+                cardDiv.classList.add('game-type-card');
+                cardDiv.dataset.categoryKey = key;
+                cardDiv.innerHTML = `
+                    <img src="images/categories/${key}.png" alt="${category.name} Category">
+                    <span>${category.name}s</span>
+                `;
+                cardDiv.addEventListener('click', () => selectGameType(key));
+                gameTypeGrid.appendChild(cardDiv);
+            }
+        }
+
+        // --- Helper Function to Render Item Cards ---
+        function renderItemCards(gridElement, itemList, imageFolder, highlightBit = -1) {
+            gridElement.innerHTML = '';
+            itemList.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('item-card');
+                itemDiv.innerHTML = `
+                    <img src="images/${imageFolder}/${item.imageName}" alt="${item.name}">
+                    <span>${item.id}. ${item.name}</span>
+                    <span class="binary-hint"></span>
+                `;
+
+                const binaryHintSpan = itemDiv.querySelector('.binary-hint');
+                const binaryString = item.id.toString(2).padStart(5, '0');
+                let formattedBinary = '';
+                for (let i = 0; i < binaryString.length; i++) {
+                    const currentBitValue = Math.pow(2, 4 - i);
+                    if (highlightBit !== -1 && currentBitValue === pageValues[highlightBit] && binaryString[i] === '1') {
+                        formattedBinary += `<span>${binaryString[i]}</span>`; // Highlighted bit
+                    } else {
+                        formattedBinary += binaryString[i]; // Non-highlighted bit
+                    }
+                }
+                binaryHintSpan.innerHTML = `(${formattedBinary})`;
+
+                if (showBinaryHints) {
+                    itemDiv.classList.add('show-hints');
+                } else {
+                    itemDiv.classList.remove('show-hints');
+                }
+                gridElement.appendChild(itemDiv);
+            });
+        }
+
+
+        // --- Game Flow Functions ---
+
+        function selectGameType(key) {
+            currentCategoryKey = key;
+            currentCategoryData = gameCategories[key];
+            gameTypeSelectionScreen.style.display = 'none';
+            masterListScreen.style.display = 'block';
+            gameCategoryName.textContent = currentCategoryData.name.toLowerCase();
+            renderItemCards(masterItemGrid, currentCategoryData.items, currentCategoryData.imageFolder);
+        }
+
+        function startGame() {
+            masterListScreen.style.display = 'none';
+            gameScreen.style.display = 'block';
+            currentPageIndex = 0;
+            currentSum = 0;
+            displayCurrentPage();
+        }
+
+        function displayCurrentPage() {
+            if (currentPageIndex >= pageNames.length) {
+                revealResult();
+                return;
+            }
+
+            const currentPageValue = pageValues[currentPageIndex];
+            const currentPageName = pageNames[currentPageIndex];
+
+            pageTitle.textContent = `Page ${currentPageName}:`;
+            currentPageCategoryName.textContent = currentCategoryData.name.toLowerCase();
+
+            const itemsOnCurrentPage = currentCategoryData.items.filter(item => (item.id & currentPageValue) !== 0);
+
+            renderItemCards(gameItemGrid, itemsOnCurrentPage, currentCategoryData.imageFolder, currentPageIndex);
+        }
+
+        function handleAnswer(isYes) {
+            if (isYes) {
+                currentSum += pageValues[currentPageIndex];
+            }
+            currentPageIndex++;
+            displayCurrentPage();
+        }
+
+        function revealResult() {
+            gameScreen.style.display = 'none';
+            revealScreen.style.display = 'block';
+
+            const guessedItem = currentCategoryData.items.find(item => item.id === currentSum);
+
+            if (guessedItem) {
+                guessedItemImage.src = `images/${currentCategoryData.imageFolder}/${guessedItem.imageName}`;
+                guessedItemImage.alt = guessedItem.name;
+                guessedItemName.textContent = guessedItem.name;
+            } else {
+                guessedItemImage.src = "images/question_mark.png"; // Fallback image for error
+                guessedItemName.textContent = "Oops! Something went wrong or your choice wasn't in the list.";
+            }
+        }
+
+        function resetGame() {
+            revealScreen.style.display = 'none';
+            gameTypeSelectionScreen.style.display = 'block';
+            currentPageIndex = 0;
+            currentSum = 0;
+            showBinaryHints = false;
+            currentCategoryKey = null;
+            currentCategoryData = null;
+            renderGameTypeCards();
+        }
+
+        function toggleBinaryHints() {
+            showBinaryHints = !showBinaryHints;
+            // Re-render the relevant screen to apply/remove hints
+            if (gameTypeSelectionScreen.style.display === 'block') {
+                // No hints on this screen
+            } else if (masterListScreen.style.display === 'block') {
+                renderItemCards(masterItemGrid, currentCategoryData.items, currentCategoryData.imageFolder);
+            } else if (gameScreen.style.display === 'block') {
+                displayCurrentPage();
+            }
+        }
+
+        // --- Initial Setup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGameTypeCards();
+            startButton.addEventListener('click', startGame);
+        });
+
+    </script>
+</body>
+>>>>>>> master
 </html>
